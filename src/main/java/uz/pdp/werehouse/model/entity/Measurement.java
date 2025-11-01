@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Measurement extends BaseEntity {
     private String name; // e.g. kg, litr, dona

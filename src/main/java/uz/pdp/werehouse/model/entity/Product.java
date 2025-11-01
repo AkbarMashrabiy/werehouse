@@ -11,6 +11,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Product extends BaseEntity {
 

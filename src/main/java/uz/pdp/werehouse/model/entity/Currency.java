@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Currency extends BaseEntity {
     private String name; // e.g. USD, UZS, EUR

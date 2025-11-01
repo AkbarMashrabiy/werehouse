@@ -1,14 +1,13 @@
 package uz.pdp.werehouse.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@ToString
 public class AuthUserDTO {
     private String id;
     private String fullName;
