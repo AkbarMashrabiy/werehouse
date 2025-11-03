@@ -1,15 +1,18 @@
 package uz.pdp.werehouse.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uz.pdp.werehouse.model.entity.AuthUser;
 import uz.pdp.werehouse.repository.AuthUserRepository;
 import uz.pdp.werehouse.service.AuthUserService;
 
 @Component
-@RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
+    @Autowired
+    public AuthUserServiceImpl(AuthUserRepository authUserRepository) {
+        this.authUserRepository = authUserRepository;
+    }
 
     @Override
     public boolean isExist(String username) {
@@ -18,7 +21,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     @Override
     public boolean isActive(String username) {
-        return authUserRepository.isActive(username);
+        return authUserRepository.existsByUsernameAndActiveTrue(username);
     }
 
     @Override

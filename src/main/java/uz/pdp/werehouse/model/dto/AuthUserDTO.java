@@ -9,9 +9,14 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class AuthUserDTO {
+    @NonNull
     private String id;
+    @NonNull
     private String fullName;
+    @NonNull
     private String username;
-    private boolean active;
+    @NonNull
+    private Boolean active;
+    @NonNull
     private String roleName;
 }

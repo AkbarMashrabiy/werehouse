@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface AuthUserRepository extends JpaRepository<AuthUser, String> {
     List<AuthUser> findAuthUserByUsername(String username);
-    boolean isActive(String username);
+    boolean existsByUsernameAndActiveTrue(String username);
     boolean existsByUsername(String username);
 }
