@@ -28,6 +28,7 @@ public class AuthController {
         return service.login(loginDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN' , 'DIRECTOR')")
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerDto) {
         MyResponse register = service.register(registerDto);
