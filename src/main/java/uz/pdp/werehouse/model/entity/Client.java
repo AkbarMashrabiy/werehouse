@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 
 @Getter
 @Setter
@@ -13,8 +16,10 @@ import lombok.*;
 @Builder
 @Entity
 public class Client extends BaseEntity {
-
+    @NotBlank(message = "Client name cannot be blank")
     private String name;
+    @NotBlank(message = "Client phone number cannot be blank")
+    @Size (min = 12, max = 12, message = "Client phone number must be 12 digits")
     private String phoneNumber;
-    private boolean active;
+    private boolean active = true;
 }

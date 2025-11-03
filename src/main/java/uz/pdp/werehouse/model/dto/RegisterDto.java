@@ -1,10 +1,8 @@
 package uz.pdp.werehouse.model.dto;
 
 import lombok.*;
-import uz.pdp.werehouse.model.role.Role;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -12,14 +10,13 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AuthUserDTO {
-    @NotBlank(message = "id cannot be null")
-    private String id;
+public class RegisterDto {
     @NotBlank(message = "fullName cannot be null")
     private String fullName;
     @NotBlank(message = "username cannot be null")
     private String username;
-    private boolean active = true;
+    @NotBlank(message = "password cannot be null")
+    private String password;
     @NotBlank(message = "roleName cannot be null")
-    private Set<Role> roles;
+    private String role_id;
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.pdp.werehouse.model.role.Role;
 
-import java.util.Optional;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -14,5 +14,5 @@ public class ResultLogin {
     private String message;
     private boolean active;
     private String token;
-    private Optional<Role> role;
+    private Set<Role> role;
 }

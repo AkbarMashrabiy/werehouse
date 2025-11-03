@@ -3,22 +3,19 @@ package uz.pdp.werehouse.mapper;
 import org.springframework.stereotype.Component;
 import uz.pdp.werehouse.model.dto.AuthUserDTO;
 import uz.pdp.werehouse.model.entity.AuthUser;
-import uz.pdp.werehouse.model.role.Role;
+
 
 @Component
 public class AuthUserMapper {
 
     public static AuthUser toAuthUser(AuthUserDTO userDTO){
 
-        Role role = new Role();
-        role.setName(userDTO.getRoleName());
-
         AuthUser authUser = new AuthUser();
         authUser.setId(userDTO.getId());
         authUser.setUsername(userDTO.getUsername());
         authUser.setFullName(userDTO.getFullName());
-        authUser.setActive(userDTO.getActive());
-        authUser.setRole(role);
+        authUser.setActive(userDTO.isActive());
+        authUser.setRoles(userDTO.getRoles());
         return authUser;
     }
 
@@ -27,9 +24,8 @@ public class AuthUserMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .fullName(user.getFullName())
-                .roleName(user.getRole().getName())
+                .roles(user.getRoles())
                 .active(user.isActive())
                 .build();
     }
-
 }
