@@ -1,15 +1,39 @@
 package uz.pdp.werehouse.service.impl;
 
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
+import uz.pdp.werehouse.model.dto.*;
 import uz.pdp.werehouse.model.entity.AuthUser;
+import uz.pdp.werehouse.model.role.Role;
 import uz.pdp.werehouse.repository.AuthUserRepository;
+import uz.pdp.werehouse.repository.RoleRepository;
 import uz.pdp.werehouse.service.AuthUserService;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final UserDetailsManager userDetailsManager;
+//
+//    @Autowired
+//    public AuthUserServiceImpl(AuthUserRepository authUserRepository, PasswordEncoder passwordEncoder) {
+//        this.authUserRepository = authUserRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     @Override
     public boolean isExist(String username) {
@@ -17,54 +41,83 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
+    public HttpEntity<?> login(LoginDto loginDto) {
+        Optional<AuthUser> byUsername = authUserRepository.findAuthUserByUsername(loginDto.getUsername());
+        if (byUsername.isPresent()) {
+            AuthUser authUser = byUsername.get();
+            if (passwordEncoder.matches(loginDto.getPassword(), authUser.getPassword())) {
+                AuthenticationManager authenticationManager = authentication -> new UsernamePasswordAuthenticationToken(
+                        authUser,
+                        null,
+                        authUser.getAuthorities()
+                );
+
+                return ResponseEntity.ok(
+                        new ResultLogin(
+                                "Successfully login",
+                                true,
+                                null,
+                                authUser.getRoles()
+                        )
+                );
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MyResponse.WRONG_PASSWORD);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MyResponse.USER_NOT_FOUND);
+    }
+
+    @Override
+    public MyResponse register(RegisterDto registerDto) {
+        if (authUserRepository.existsByUsername(registerDto.getUsername())) {
+            return MyResponse.USERNAME_EXISTS;
+        }
+        if (authUserRepository.existsByFullName(registerDto.getFullName())) {
+            return MyResponse.FULL_NAME_EXISTS;
+        }
+        final Optional<Role> byId = roleRepository.findById(registerDto.getRole_id());
+        if (byId.isPresent()){
+            final Role role = byId.get();
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            AuthUser authUser = new AuthUser(
+                    registerDto.getFullName(),
+                    registerDto.getUsername(),
+                    passwordEncoder.encode(registerDto.getPassword()),
+                    true,
+                    roles
+            );
+            authUserRepository.save(authUser);
+            return MyResponse.SUCCESSFULLY_CREATED;
+        }
+        return MyResponse.ROLE_NOT_FOUND;
+    }
+
+
+    @Override
     public boolean isActive(String username) {
-        return authUserRepository.isActive(username);
+        return authUserRepository.existsByUsernameAndActiveTrue(username);
     }
 
     @Override
-    public AuthUser getByUsername(String username) {
-       return (AuthUser) authUserRepository.findAuthUserByUsername(username);
+    public Optional<AuthUser>getByUsername(String username) {
+       return authUserRepository.findAuthUserByUsername(username);
     }
 
     @Override
-    public AuthUser save(AuthUser authUser) {
-        return authUserRepository.save(authUser);
+    public Optional<AuthUser> save(AuthUser authUser) {
+        return Optional.of(authUserRepository.save(authUser));
     }
 
     @Override
-    public void delete(String username) {
-        AuthUser user = getByUsername(username);
-        user.setActive(false);
-        save(user);
+    public boolean delete(String username) {
+        Optional<AuthUser> user = getByUsername(username);
+        if (user.isPresent()) {
+            user.get().setActive(false);
+            save(user.get());
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public boolean isAdmin(String username) {
-        AuthUser user = getByUsername(username);
-        return user.getRole().getName().equals("ADMIN");
-    }
 
-    @Override
-    public boolean isUser(String username) {
-        AuthUser user = getByUsername(username);
-        return user.getRole().getName().equals("USER");
-    }
-
-    @Override
-    public boolean isManager(String username) {
-        AuthUser user = getByUsername(username);
-        return user.getRole().getName().equals("MANAGER");
-    }
-
-    @Override
-    public boolean isCashier(String username) {
-        AuthUser user = getByUsername(username);
-        return user.getRole().getName().equals("CASHIER");
-    }
-
-    @Override
-    public boolean isDirector(String username) {
-        AuthUser user = getByUsername(username);
-        return user.getRole().getName().equals("DIRECTOR");
-    }
 }

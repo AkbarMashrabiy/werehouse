@@ -1,11 +1,17 @@
 package uz.pdp.werehouse.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import uz.pdp.werehouse.model.role.Role;
 import lombok.*;
-
+import javax.validation.constraints.NotBlank;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,14 +20,26 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-public class AuthUser extends BaseEntity {
-
+public class AuthUser extends BaseEntity implements UserDetails {
+    @NotBlank(message = "Full name shouldn't be null")
     private String fullName;
+    @NotBlank(message = "Username shouldn't be null")
     private String username;
+    @NotBlank(message = "Password shouldn't be null")
     private String password;
     private boolean active;
 
-    @ManyToOne
-    private Role role;
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+
+    @Override
+    public Set<Role> getAuthorities() {
+        return this.roles;
+    }
 
 }

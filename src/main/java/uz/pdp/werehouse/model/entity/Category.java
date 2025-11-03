@@ -1,9 +1,11 @@
 package uz.pdp.werehouse.model.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
+
+import javax.validation.constraints.NotBlank;
 
 
 @Getter
@@ -14,9 +16,6 @@ import lombok.*;
 @Builder
 @Entity
 public class Category extends BaseEntity {
-
+    @NotBlank(message = "Category name cannot be blank")
     private String name;
-
-    @ManyToOne
-    private Category parentCategory; // for nested categories
 }

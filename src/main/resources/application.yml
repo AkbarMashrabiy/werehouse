@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: warehouse
   datasource:
     driver-class-name: org.postgresql.Driver
     password: root123
@@ -12,4 +14,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show_sql: true
+
 
