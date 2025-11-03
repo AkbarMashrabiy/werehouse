@@ -2,7 +2,6 @@ package uz.pdp.werehouse.service;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
-import uz.pdp.werehouse.model.dto.AuthUserDTO;
 import uz.pdp.werehouse.model.dto.LoginDto;
 import uz.pdp.werehouse.model.dto.MyResponse;
 import uz.pdp.werehouse.model.dto.RegisterDto;
