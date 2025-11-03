@@ -5,7 +5,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 
 

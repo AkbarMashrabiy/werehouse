@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 

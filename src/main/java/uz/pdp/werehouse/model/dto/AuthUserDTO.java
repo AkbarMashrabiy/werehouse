@@ -2,7 +2,6 @@ package uz.pdp.werehouse.model.dto;
 
 import lombok.*;
 import uz.pdp.werehouse.model.role.Role;
-
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 

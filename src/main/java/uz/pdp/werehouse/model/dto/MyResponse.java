@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class MyResponse {
     public static final MyResponse USER_NOT_FOUND = new MyResponse("User not found", false);
     public static final MyResponse WRONG_PASSWORD = new MyResponse("Password doesnt match", false);
-    public static final MyResponse USERNAME_EXISTS = new MyResponse("The phone number already taken", false);
+    public static final MyResponse USERNAME_EXISTS = new MyResponse("The username already taken", false);
     public static final MyResponse FULL_NAME_EXISTS = new MyResponse("The fullName already taken", false);
     public static final MyResponse ROLE_NOT_FOUND = new MyResponse("The role not found", false);
     public static final MyResponse SUCCESSFULLY_CREATED = new MyResponse("Successfully created", true);
@@ -30,9 +30,7 @@ public class MyResponse {
     public static final MyResponse YOU_DONT_HAVE_THIS_PRODUCT = new MyResponse("Currently you don't have this product, please check your balance", false);
     public static final MyResponse OUTCOME_NOT_FOUND = new MyResponse("The outcome not found", false);
     public static final MyResponse YOU_CANT_CREATE = new MyResponse("You can't create this item", false);
-    public static final MyResponse COMPLAINT_NOT_FOUND = new MyResponse("Complaint not found", false);
     public static final MyResponse FILE_NOT_FOUND = new MyResponse("Photo hasn't uploaded", false);
-    public static final MyResponse ARENT_WORKER = new MyResponse("Only workers include", false);
     public static final MyResponse WORKER_NOT_FOUND = new MyResponse("Worker not found", false);
     public static final MyResponse YOU_HAVEN_T_ACCESS = new MyResponse("You don't have access", false);
     public static final MyResponse PAYMENT_NOT_FOUND = new MyResponse("Payment Not Found", false);
