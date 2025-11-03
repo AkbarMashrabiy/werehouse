@@ -6,7 +6,6 @@ import jakarta.persistence.ManyToOne;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import java.time.LocalDateTime;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 
 

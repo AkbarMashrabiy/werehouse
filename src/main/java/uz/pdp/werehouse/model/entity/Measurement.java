@@ -7,7 +7,6 @@ import jakarta.persistence.JoinTable;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
 import uz.pdp.werehouse.model.enums.MeasurementType;
-
 import javax.validation.constraints.NotBlank;
 
 

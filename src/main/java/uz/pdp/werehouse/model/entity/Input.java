@@ -6,7 +6,6 @@ import jakarta.persistence.ManyToOne;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import java.time.LocalDateTime;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -19,7 +18,6 @@ import javax.validation.constraints.Size;
 @Builder
 @Entity
 public class Input extends BaseEntity {
-
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id")

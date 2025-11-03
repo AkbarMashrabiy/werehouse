@@ -1,17 +1,21 @@
 package uz.pdp.werehouse.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import uz.pdp.werehouse.model.entity.AuthUser;
+import uz.pdp.werehouse.repository.AuthUserRepository;
 
 @Component
-public class MyUserDetailsService  implements UserDetailsService {
+@RequiredArgsConstructor
+public class MyUserDetailsService implements UserDetailsService {
+
+    private final AuthUserRepository authUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return new AuthUser();
+        return authUserRepository.findAuthUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 }

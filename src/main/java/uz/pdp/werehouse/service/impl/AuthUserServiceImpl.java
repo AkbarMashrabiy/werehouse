@@ -2,21 +2,24 @@ package uz.pdp.werehouse.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
-import uz.pdp.werehouse.model.dto.*;
+import uz.pdp.werehouse.model.dto.LoginDto;
+import uz.pdp.werehouse.model.dto.MyResponse;
+import uz.pdp.werehouse.model.dto.RegisterDto;
+import uz.pdp.werehouse.model.dto.ResultLogin;
 import uz.pdp.werehouse.model.entity.AuthUser;
 import uz.pdp.werehouse.model.role.Role;
 import uz.pdp.werehouse.repository.AuthUserRepository;
 import uz.pdp.werehouse.repository.RoleRepository;
+import uz.pdp.werehouse.security.JwtProvider;
 import uz.pdp.werehouse.service.AuthUserService;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -27,12 +30,8 @@ public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-//
-//    @Autowired
-//    public AuthUserServiceImpl(AuthUserRepository authUserRepository, PasswordEncoder passwordEncoder) {
-//        this.authUserRepository = authUserRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
+    private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
     @Override
     public boolean isExist(String username) {
@@ -40,23 +39,32 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public HttpEntity<?> login(LoginDto loginDto) {
+    public ResponseEntity<?> login(LoginDto loginDto) {
         Optional<AuthUser> byUsername = authUserRepository.findAuthUserByUsername(loginDto.getUsername());
         if (byUsername.isPresent()) {
             AuthUser authUser = byUsername.get();
             if (passwordEncoder.matches(loginDto.getPassword(), authUser.getPassword())) {
-                AuthenticationManager authenticationManager = authentication -> new UsernamePasswordAuthenticationToken(
-                        authUser,
-                        null,
-                        authUser.getAuthorities()
+                String accessToken = jwtProvider.generateAccessToken(authUser);
+                String refreshToken = jwtProvider.generateRefreshToken(authUser);
+
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                authUser.getUsername(),
+                                loginDto.getPassword(),
+                                authUser.getAuthorities()
+                        )
                 );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                AuthUser user = (AuthUser) authentication.getPrincipal();
 
                 return ResponseEntity.ok(
                         new ResultLogin(
                                 "Successfully login",
                                 true,
-                                null,
-                                authUser.getRoles()
+                                accessToken,
+                                refreshToken,
+                                user.getRoles()
                         )
                 );
             }
@@ -74,7 +82,7 @@ public class AuthUserServiceImpl implements AuthUserService {
             return MyResponse.FULL_NAME_EXISTS;
         }
         final Optional<Role> byId = roleRepository.findById(registerDto.getRole_id());
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             final Role role = byId.get();
             Set<Role> roles = new HashSet<>();
             roles.add(role);
@@ -98,8 +106,8 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Override
-    public Optional<AuthUser>getByUsername(String username) {
-       return authUserRepository.findAuthUserByUsername(username);
+    public Optional<AuthUser> getByUsername(String username) {
+        return authUserRepository.findAuthUserByUsername(username);
     }
 
     @Override
@@ -117,6 +125,5 @@ public class AuthUserServiceImpl implements AuthUserService {
         }
         return false;
     }
-
 
 }

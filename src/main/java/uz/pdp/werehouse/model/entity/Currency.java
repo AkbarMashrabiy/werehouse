@@ -7,7 +7,6 @@ import jakarta.persistence.JoinColumn;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
 import uz.pdp.werehouse.model.enums.CurrencyName;
-
 import javax.validation.constraints.NotBlank;
 
 

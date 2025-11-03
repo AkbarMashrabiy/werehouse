@@ -13,6 +13,7 @@ import java.util.Set;
 public class ResultLogin {
     private String message;
     private boolean active;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private Set<Role> role;
 }
