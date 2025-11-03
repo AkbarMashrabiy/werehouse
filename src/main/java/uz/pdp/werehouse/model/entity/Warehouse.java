@@ -1,7 +1,8 @@
 package uz.pdp.werehouse.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class Warehouse extends BaseEntity {
     private String phoneNumber;
 
     @NotBlank(message = "Warehouse email cannot be blank")
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
     private boolean active = true;
