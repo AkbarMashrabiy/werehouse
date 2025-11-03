@@ -27,7 +27,6 @@ public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final UserDetailsManager userDetailsManager;
 //
 //    @Autowired
 //    public AuthUserServiceImpl(AuthUserRepository authUserRepository, PasswordEncoder passwordEncoder) {

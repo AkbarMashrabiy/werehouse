@@ -3,14 +3,12 @@ package uz.pdp.werehouse.model.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import uz.pdp.werehouse.model.role.Role;
 import lombok.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.List;
+
 import java.util.Set;
 
 @Getter
