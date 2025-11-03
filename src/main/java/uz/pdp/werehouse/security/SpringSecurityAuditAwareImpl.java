@@ -11,17 +11,18 @@ public class SpringSecurityAuditAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
             if (authentication == null || !authentication.isAuthenticated()) {
                 return Optional.of("system");
             }
 
             Object principal = authentication.getPrincipal();
 
-            if (principal instanceof org.springframework.security.core.userdetails.User) {
-                return Optional.of(((org.springframework.security.core.userdetails.User) principal).getUsername());
-            } else if (principal instanceof String) {
-                return Optional.of((String) principal);
+            if (principal instanceof org.springframework.security.core.userdetails.User user) {
+                return Optional.of(user.getUsername());
+            } else if (principal instanceof uz.pdp.werehouse.model.entity.AuthUser authUser) {
+                return Optional.of(authUser.getUsername());
+            } else if (principal instanceof String username) {
+                return Optional.of(username);
             }
 
             return Optional.of("unknown");

@@ -50,8 +50,7 @@ public class AuthUserServiceImpl implements AuthUserService {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 authUser.getUsername(),
-                                loginDto.getPassword(),
-                                authUser.getAuthorities()
+                                loginDto.getPassword()
                         )
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
