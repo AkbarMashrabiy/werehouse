@@ -47,23 +47,13 @@ public class AuthUserServiceImpl implements AuthUserService {
                 String accessToken = jwtProvider.generateAccessToken(authUser);
                 String refreshToken = jwtProvider.generateRefreshToken(authUser);
 
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                authUser.getUsername(),
-                                loginDto.getPassword()
-                        )
-                );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                AuthUser user = (AuthUser) authentication.getPrincipal();
-
                 return ResponseEntity.ok(
                         new ResultLogin(
                                 "Successfully login",
                                 true,
                                 accessToken,
                                 refreshToken,
-                                user.getRoles()
+                                byUsername.get().getRoles()
                         )
                 );
             }

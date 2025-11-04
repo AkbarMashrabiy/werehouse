@@ -23,4 +23,6 @@ public class Currency extends BaseEntity {
     @JoinColumn(name = "currency_name")
     private CurrencyName name; // e.g. USD, UZS, EUR
     private boolean active = true;
+
+
 }
