@@ -1,19 +1,17 @@
-package uz.pdp.werehouse.model.entity;
+package uz.pdp.werehouse.model.dto;
 
-import jakarta.persistence.Entity;
-import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-public class Category extends BaseEntity {
+@ToString
+public class CategoryDto {
+    @NotBlank(message = "Category id cannot be blank")
+    private String id;
     @NotBlank(message = "Category name cannot be blank")
     private String name;
 }

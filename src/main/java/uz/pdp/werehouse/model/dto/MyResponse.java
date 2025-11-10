@@ -38,6 +38,8 @@ public class MyResponse {
     public static final MyResponse BALANCE_DONT_RETURNED = new MyResponse("Product didn't return", true);
     public static final MyResponse FAILED_TO_CREATE = new MyResponse("Failed to create", false);
     public static final MyResponse WAREHOUSE_NOT_FOUND = new MyResponse("Warehouse not found", false);
+    public static final MyResponse CATEGORY_NAME_ALREADY_EXISTS = new MyResponse("Category name already exists", false);
+    public static final MyResponse CATEGORY_NOT_FOUND =  new MyResponse("Category not found", false);
 
     private String message;
     private boolean active;
