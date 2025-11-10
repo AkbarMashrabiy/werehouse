@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.werehouse.model.dto.AuthUserDTO;
 import uz.pdp.werehouse.model.dto.LoginDto;
 import uz.pdp.werehouse.model.dto.MyResponse;
 import uz.pdp.werehouse.model.dto.RegisterDto;
@@ -12,6 +13,7 @@ import uz.pdp.werehouse.model.entity.AuthUser;
 import uz.pdp.werehouse.security.JwtProvider;
 import uz.pdp.werehouse.service.impl.AuthUserServiceImpl;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +30,6 @@ public class AuthController {
         return service.login(loginDto);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN' , 'DIRECTOR')")
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerDto) {
         MyResponse register = service.register(registerDto);
@@ -36,6 +37,12 @@ public class AuthController {
             return ResponseEntity.ok(register);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(register);
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasAnyRole('MANAGER', 'DIRECTOR')")
+    public ResponseEntity<Optional<List<AuthUserDTO>>> users()  {
+        return ResponseEntity.ok(service.getAllUsers());
     }
 
     @PostMapping("/refresh-token")
@@ -53,12 +60,8 @@ public class AuthController {
         return service.delete(username) ? ResponseEntity.ok().build() : ResponseEntity.status(401).build();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN' , 'DIRECTOR')")
     @GetMapping("/test")
     public ResponseEntity<String> test(@RequestBody String test) {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
-
-
-
 }

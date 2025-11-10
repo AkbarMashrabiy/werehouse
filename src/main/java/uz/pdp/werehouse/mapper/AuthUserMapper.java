@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import uz.pdp.werehouse.model.dto.AuthUserDTO;
 import uz.pdp.werehouse.model.entity.AuthUser;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Component
 public class AuthUserMapper {
@@ -27,5 +30,9 @@ public class AuthUserMapper {
                 .roles(user.getRoles())
                 .active(user.isActive())
                 .build();
+    }
+
+    public Optional<List<AuthUserDTO>> toDto(List<AuthUser> all) {
+        return  Optional.of(all.stream().map(AuthUserMapper::toAuthUserDTO).toList());
     }
 }

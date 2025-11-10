@@ -25,7 +25,6 @@ public class MyResponse {
     public static final MyResponse INPUT_TYPE_ERROR = new MyResponse("The input type error", false);
     public static final MyResponse CAN_DELETE_OWN = new MyResponse("Only you can delete your own item !", false);
     public static final MyResponse SUCCESSFULLY_PAYED = new MyResponse("Successfully paid", true);
-    public static final MyResponse DELIVERY_NOT_FOUND = new MyResponse("The deliverer not found", false);
     public static final MyResponse SUCCESSFULLY_DELIVERED = new MyResponse("The delivery successfully delivered", true);
     public static final MyResponse YOU_DONT_HAVE_THIS_PRODUCT = new MyResponse("Currently you don't have this product, please check your balance", false);
     public static final MyResponse OUTCOME_NOT_FOUND = new MyResponse("The outcome not found", false);
@@ -37,6 +36,8 @@ public class MyResponse {
     public static final MyResponse SUCCESSFULLY_TRANSFERRED = new MyResponse("Product successfully transferred, but waited", true);
     public static final MyResponse SUCCESSFULLY_MOVED = new MyResponse("Product successfully moved ", true);
     public static final MyResponse BALANCE_DONT_RETURNED = new MyResponse("Product didn't return", true);
+    public static final MyResponse FAILED_TO_CREATE = new MyResponse("Failed to create", false);
+    public static final MyResponse WAREHOUSE_NOT_FOUND = new MyResponse("Warehouse not found", false);
 
     private String message;
     private boolean active;
