@@ -10,7 +10,6 @@ import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
 import uz.pdp.werehouse.model.enums.RoleName;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 

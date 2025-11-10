@@ -1,19 +1,14 @@
 package uz.pdp.werehouse.service.impl;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uz.pdp.werehouse.model.dto.LoginDto;
-import uz.pdp.werehouse.model.dto.MyResponse;
-import uz.pdp.werehouse.model.dto.RegisterDto;
-import uz.pdp.werehouse.model.dto.ResultLogin;
+import org.springframework.stereotype.Service;
+import uz.pdp.werehouse.mapper.AuthUserMapper;
+import uz.pdp.werehouse.model.dto.*;
 import uz.pdp.werehouse.model.entity.AuthUser;
 import uz.pdp.werehouse.model.role.Role;
 import uz.pdp.werehouse.repository.AuthUserRepository;
@@ -21,10 +16,11 @@ import uz.pdp.werehouse.repository.RoleRepository;
 import uz.pdp.werehouse.security.JwtProvider;
 import uz.pdp.werehouse.service.AuthUserService;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class AuthUserServiceImpl implements AuthUserService {
     private final AuthUserRepository authUserRepository;
@@ -32,6 +28,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final AuthUserMapper authUserMapper;
 
     @Override
     public boolean isExist(String username) {
@@ -64,7 +61,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     @Override
     public MyResponse register(RegisterDto registerDto) {
-        if (authUserRepository.existsByUsername(registerDto.getUsername())) {
+        if (isExist(registerDto.getUsername())) {
             return MyResponse.USERNAME_EXISTS;
         }
         if (authUserRepository.existsByFullName(registerDto.getFullName())) {
@@ -88,10 +85,18 @@ public class AuthUserServiceImpl implements AuthUserService {
         return MyResponse.ROLE_NOT_FOUND;
     }
 
-
     @Override
     public boolean isActive(String username) {
         return authUserRepository.existsByUsernameAndActiveTrue(username);
+    }
+
+    @Override
+    public Optional<List<AuthUserDTO>> getAllUsers() {
+        List<AuthUser> all = authUserRepository.findAll();
+        if (all.isEmpty()) {
+            return Optional.empty();
+        }
+        return authUserMapper.toDto(all);
     }
 
     @Override
@@ -101,6 +106,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     @Override
     public Optional<AuthUser> save(AuthUser authUser) {
+        if (authUser == null || authUser.getUsername() == null || isExist(authUser.getUsername())) return Optional.empty();
         return Optional.of(authUserRepository.save(authUser));
     }
 
@@ -114,5 +120,4 @@ public class AuthUserServiceImpl implements AuthUserService {
         }
         return false;
     }
-
 }

@@ -9,13 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import uz.pdp.werehouse.model.role.Role;
 import lombok.*;
+
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "password")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

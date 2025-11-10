@@ -1,8 +1,10 @@
 package uz.pdp.werehouse.model.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
+
 import javax.validation.constraints.NotBlank;
 
 @Getter

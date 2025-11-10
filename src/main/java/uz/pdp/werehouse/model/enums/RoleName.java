@@ -6,4 +6,7 @@ public enum RoleName {
     DIRECTOR,
     CASHIER,
     MANAGER,
+    ACCOUNTANT,
+    SUPPLIER,
+    CLIENT,
 }
