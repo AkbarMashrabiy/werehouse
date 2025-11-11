@@ -37,14 +37,14 @@ public class WarehouseController {
         return ResponseEntity.status(400).body(MyResponse.FAILED_TO_CREATE);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<WarehouseDto> getWarehouseById(@PathVariable("id") @Valid String id) {
-        WarehouseDto warehouseDto = service.getWarehouseById(id);
-        if (warehouseDto == null){
-            return ResponseEntity.notFound().build();
+        @GetMapping("/{id}")
+        public ResponseEntity<WarehouseDto> getWarehouseById(@PathVariable("id") @Valid String id) {
+            WarehouseDto warehouseDto = service.getWarehouseById(id);
+            if (warehouseDto == null){
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(warehouseDto);
         }
-        return ResponseEntity.ok(warehouseDto);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MyResponse> deleteWarehouse(@PathVariable("id") @Valid String id) {

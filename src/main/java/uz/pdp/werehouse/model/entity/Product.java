@@ -6,6 +6,7 @@ import jakarta.persistence.ManyToOne;
 import uz.pdp.werehouse.model.base.BaseEntity;
 import lombok.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
@@ -29,7 +30,7 @@ public class Product extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotBlank(message = "Category can't be null")
+    @NotNull(message = "Category can't be null")
     private Category category;
 
     @ManyToOne
